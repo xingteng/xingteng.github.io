@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>HongXin&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="HongXin&#39;s blog">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="HongXin&#39;s blog">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HongXin&#39;s blog">
+  
+    <link rel="alternate" href="/atom.xml" title="HongXin&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">HongXin&#39;s blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-我的第一篇博文" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/31/我的第一篇博文/" class="article-date">
+  <time datetime="2018-07-31T08:49:30.000Z" itemprop="datePublished">2018-07-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/31/我的第一篇博文/">我的第一篇博文-基于GitHub Pages的博客搭建</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="我的第一篇博文-基于GitHub-Pages的博客搭建"><a href="#我的第一篇博文-基于GitHub-Pages的博客搭建" class="headerlink" title="我的第一篇博文-基于GitHub Pages的博客搭建"></a>我的第一篇博文-基于GitHub Pages的博客搭建</h1><p>今年的5月份开始学习前端，那时候就想着以后要搭建一个自己的博客。今天终于开始动手搭建了！</p>
+<h2 id="基础信息："><a href="#基础信息：" class="headerlink" title="基础信息："></a>基础信息：</h2><ul>
+<li>系统：windows 10 64位 </li>
+<li>编辑器：sublime text3</li>
+<li>控制台：Cmder</li>
+<li>博客框架：Hexo<h2 id="Hexo博客框架"><a href="#Hexo博客框架" class="headerlink" title="Hexo博客框架"></a>Hexo博客框架</h2>快速、简洁且高效的博客框架。进入<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo官网</a></li>
+</ul>
+<h2 id="配置Github"><a href="#配置Github" class="headerlink" title="配置Github"></a>配置Github</h2><p>Create a new repository<br>Repository name 为： yourname.github.io (yourname需替换成你的注册用户名,这个就是你博客的域名了)<br>例如，我的Github主页是github.com/xingteng。就填入xingteng.github.io。</p>
+<h2 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h2><ol>
+<li><p>安装<a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a></p>
+</li>
+<li><p>安装Git for Windows–<a href="https://github.com/waylau/git-for-win" target="_blank" rel="noopener">国内站点</a>.对Git设置用户名和Email（请自行baidu或Google）</p>
+</li>
+<li><p>安装<a href="cmder.net">Cmder</a>-解压后即可使用</p>
+</li>
+<li><p>打开Cmder输入以下命令</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo -g hexo-cli</span><br></pre></td></tr></table></figure>
+<h2 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h2><p>在电脑某磁盘目录下新建文件夹 myBlog，进入myBlog，右键鼠标选择Cmder Here。</p>
+<p><img src="/2018/07/31/我的第一篇博文/D:/myBlog\blog\source\_posts\我的第一篇博文\click.png" alt="右键鼠标"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init bolg</span><br></pre></td></tr></table></figure>
+<p> 等待命令结束，成功提示：INFO  Start blogging with Hexo! 后输入以下命令行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">INFO  Start blogging with Hexo!</span><br><span class="line">$ cd blog</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure>
+<p>因为初始化hexo 之后source目录下自带一篇hello world文章, 所以直接执行下方命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br><span class="line"># 启动本地服务器</span><br><span class="line">$ hexo server</span><br><span class="line"># 在浏览器输入 http://localhost:4000/就可以看见网页和模板了</span><br><span class="line">INFO  Start processing</span><br><span class="line">INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/07/31/我的第一篇博文/D:/myBlog\blog\source\_posts\我的第一篇博文\first-look.jpg" alt="预览"></p>
+<p>访问<code>http://localhost:4000/</code>，便可以看到网站初步的模样，是不是有点激动，接着我们还要把网页发布到Github上去。 </p>
+<p>重新打开Cmder，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;Github的注册邮箱地址&quot;</span><br></pre></td></tr></table></figure>
+<p>一直Enter过来就好，得到信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Your public key has been saved in /c/Users/user/.ssh/id_rsa.pub.</span><br></pre></td></tr></table></figure>
+<p>找到该文件，打开（sublime text），Ctrl + a复制里面的所有内容，然后进入Sign in to GitHub：<a href="https://github.com/settings/ssh" target="_blank" rel="noopener">https://github.com/settings/ssh</a></p>
+<h2 id="配置博客"><a href="#配置博客" class="headerlink" title="配置博客"></a>配置博客</h2><p>在blog目录下，用sublime打开_config.yml文件，修改参数信息</p>
+<p><strong>特别提醒，在每个参数的：后都要加一个空格</strong></p>
+<p>修改网站相关信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">title: 博客标题</span><br><span class="line">subtitle: 副标题</span><br><span class="line">description: 网页描述</span><br><span class="line">author: 姓名</span><br><span class="line">language: zh-CN</span><br><span class="line">timezone: Asia/Beijing</span><br></pre></td></tr></table></figure>
+<p>配置部署（我的是xingteng，修改成自己的）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy: </span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/xingteng/xingteng.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+<h2 id="发表文章"><a href="#发表文章" class="headerlink" title="发表文章"></a>发表文章</h2><p>在Cmder中输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new &quot;我的第一篇博客&quot;</span><br><span class="line">INFO  Created: D:\myBlog\blog\source\_posts\我的第一篇博文.md</span><br></pre></td></tr></table></figure>
+<p>找到该文章，打开，使用Markdown书写吧。<br>写完后，保存然后执行以下步骤：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">D:\myBlog\blog</span><br><span class="line">$ hexo clean</span><br><span class="line">INFO  Deleted database.</span><br><span class="line">INFO  Deleted public folder.</span><br><span class="line"></span><br><span class="line">F:\test\blog</span><br><span class="line">$ hexo generate</span><br><span class="line">INFO  Start processing</span><br><span class="line">INFO  Files loaded in 1.48 s</span><br><span class="line">#省略</span><br><span class="line">INFO  29 files generated in 4.27 s</span><br><span class="line"></span><br><span class="line">F:\test\blog</span><br><span class="line">$ hexo server</span><br><span class="line">INFO  Start processing</span><br><span class="line">INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure></p>
+<p>这个时候，打开<a href="http://localhost:4000/，发现刚才的文章已经成功了" target="_blank" rel="noopener">http://localhost:4000/，发现刚才的文章已经成功了</a></p>
+<p>最后一步，发布到网上，执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">D:\myBlog\blog</span><br><span class="line">$ hexo deploy</span><br><span class="line">INFO  Deploying: git</span><br><span class="line">INFO  Clearing .deploy_git folder...</span><br><span class="line">INFO  Copying files from public folder...</span><br><span class="line">#省略</span><br></pre></td></tr></table></figure>
+<p>其中会跳出Github登录，直接登录，如果没有问题输入 <a href="https://xingteng.github.io/" target="_blank" rel="noopener">https://xingteng.github.io/</a><br>然后就可以看到已经发布了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/07/31/我的第一篇博文/" data-id="cjk9ocgst0000lk7k1zcnc0r2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/博客搭建/">博客搭建</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/博客搭建/" style="font-size: 10px;">博客搭建</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/07/31/我的第一篇博文/">我的第一篇博文-基于GitHub Pages的博客搭建</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 XingTeng<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
