@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="HongXin&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      层叠上下文和层叠顺序 | HongXin&#39;s blog
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>HongXin's blog</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Github</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Github</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>层叠上下文和层叠顺序</h2>
+  <p class="post-date">2019-07-21</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>这篇文章很久之前就已经写好了，一直没发到博客里，今天突然翻到重新发一下。<br>记录一下最近有关层叠上下文和层叠顺序的理解，在网页中的内容发生层叠的时候，一定有前后的层叠顺序产生（如下），所以我们这就需要我们理解css里的层叠上下文和层叠顺序。</p>
+<p><img src="/2019/07/21/层叠上下文和层叠顺序/./层叠上下文和层叠顺序/创建途径2.jpg" alt=""></p>
+<h2 id="一、层叠上下文"><a href="#一、层叠上下文" class="headerlink" title="一、层叠上下文"></a>一、层叠上下文</h2><p>层叠上下文，英文称作”stacking context”. 是HTML中的一个三维的概念。如果一个元素含有层叠上下文，我们可以理解为这个元素在z轴上有较高等级。</p>
+<p>那么z轴是什么呢？</p>
+<p>在CSS2.1规范中，每个盒模型的位置是三维的，分别是平面画布上的<code>X轴</code>，<code>Y轴</code>以及表示层叠的<code>Z轴</code>。一般情况下，元素在页面上沿<code>X轴Y轴</code>平铺，我们察觉不到它们在<code>Z轴</code>上的层叠关系。而一旦元素发生堆叠，这时就能发现某个元素可能覆盖了另一个元素或者被另一个元素覆盖。</p>
+<p>如果一个元素含有层叠上下文，(也就是说它是层叠上下文元素)，我们可以理解为这个元素在<code>Z轴</code>上就“高人一等”，最终表现就是它离屏幕观察者更近。</p>
+<p>换句话说，页面中的元素有了层叠上下文，就等同于网页中元素级别更高，离我们用户更近了。</p>
+<h2 id="二、层叠水平"><a href="#二、层叠水平" class="headerlink" title="二、层叠水平"></a>二、层叠水平</h2><p>“层叠水平”英文称作”stacking level”（也有翻译为“层叠等级”），它决定了<strong>同一个</strong><u>层叠上下文</u>中元素在z轴上的显示顺序。</p>
+<p>所有的元素都有层叠水平，包括“层叠上下文元素”，层叠上下文元素的层叠水平可以理解为官员的职级，1品2品，县长省长之类。然后，对于普通元素的层叠水平，我们的探讨仅仅局限在当前<u>层叠上下文元素</u>中。为什么呢？</p>
+<p>假设省长下面有1级下属和2级下属，且1级下属的等级高于2级；同样县长下也有1级下属和2级下属，所以即使省长的2级下属也是高于县长的1级下属的。类似地，因为层叠上下文已经比普通元素的级别要高，这时候即使普通元素的层叠水平高于层叠上下文的层叠水平也无济于事。</p>
+<p>结论：普通元素的层叠水平优先由其层叠上下文决定，因此，层叠水平的比较只有在当前层叠上下文元素中才有意义。不同层叠上下文中比较层叠水平是没有意义的。</p>
+<h2 id="三、创建层叠上下文"><a href="#三、创建层叠上下文" class="headerlink" title="三、创建层叠上下文"></a>三、创建层叠上下文</h2><p>创建的3种途径：</p>
+<ol>
+<li>根层叠上下文：<code>HTML</code>中的根元素<code>&lt;html&gt;&lt;/html&gt;</code>本身具有层叠上下文，称为“根层叠上下文”。</li>
+<li>定位元素与传统层叠上下文：普通元素设置<code>position</code>属性为<strong>非</strong><code>static</code>值并设置<code>z-index</code>属性为具体数值，产生层叠上下文。</li>
+<li>CSS3中的新属性也可以产生层叠上下文（在本文末尾会写出）</li>
+</ol>
+<p>需要注意的层叠上下文特性：</p>
+<ul>
+<li>层叠上下文的层叠水平要比普通元素高；</li>
+<li>层叠上下文可以嵌套，内部层叠上下文及其所有子元素均受制于外部的层叠上下文。</li>
+<li>每个层叠上下文是自成体系的，当元素发生层叠的时候，整个元素被认为是在父层叠上下文的层叠顺序中。</li>
+</ul>
+<p>创建途径2的代码示例：</p>
+<p>a、b、c处于不同的层叠上下文中，所以根据父级的z-index大小来确定层级。在线预览地址: <a href="https://codepen.io/XingTeng/pen/xoMedL" target="_blank" rel="noopener">https://codepen.io/XingTeng/pen/xoMedL</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box1"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"a"</span>&gt;</span>a<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"b"</span>&gt;</span>b<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box2"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"c"</span>&gt;</span>c<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>css:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box1</span>,</span><br><span class="line"><span class="selector-class">.box2</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.box1</span> &#123;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.box2</span> &#123;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.a</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: blue;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">100</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.b</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: green;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">200</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.c</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: red;</span><br><span class="line">  <span class="attribute">top</span>: -<span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">40px</span>;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">999</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/07/21/层叠上下文和层叠顺序/./层叠上下文和层叠顺序/创建途径2.jpg" alt=""></p>
+<p>box元素原本为普通元素，但通过设置<code>position</code>属性为<strong>非</strong><code>static</code>值并设置<code>z-index</code>属性为具体数值，产生层叠上下文。虽然<code>c</code>元素的<code>z-index</code>值为999，大于<code>a</code>和<code>b</code>的<code>z-index</code>值，但是由于<code>a</code>、<code>b</code>的父元素<code>div.box1</code>的<code>z-index</code>的值为2，<code>c</code>的父元素<code>div.box2</code>的层叠上下文的<code>z-index</code>值为1，所以<code>c</code>永远在<code>a</code>和<code>b</code>下面。</p>
+<h2 id="四、层叠顺序"><a href="#四、层叠顺序" class="headerlink" title="四、层叠顺序"></a>四、层叠顺序</h2><p>“层叠顺序”英文称作”stacking order”. 表示元素发生层叠时候有着特定的垂直显示顺序，注意，这里跟上面两个不一样，上面的<strong>层叠上下文和层叠水平是概念</strong>，而这里的<strong>层叠顺序是规则</strong>。</p>
+<p>css2时代的层叠顺序：</p>
+<p><img src="/2019/07/21/层叠上下文和层叠顺序/./层叠上下文和层叠顺序/层叠顺序表.jpg" alt="层叠顺序表"></p>
+<p>注意点：</p>
+<ol>
+<li><p>位于最低水平的<code>border</code>/<code>background</code>指的是层叠上下文元素的边框和背景。</p>
+</li>
+<li><p>原图没有呈现inline-block的层叠顺序，实际上，inline-block和inline水平元素是同等level级别。</p>
+</li>
+<li><p>z-index:0实际上和z-index:auto单纯从层叠水平上看，是可以看成是一样的。注意这里的措辞——“单纯从层叠水平上看”，实际上，两者在层叠上下文领域有着根本性的差异。</p>
+</li>
+<li><p>内联元素的层叠顺序要比浮动元素和块状元素都高。 原因：border/background一般为装饰属性，而浮动和块状元素一般用作布局，而内联元素都是内容。网页中最重要的是内容。因此，一定要让内容的层叠顺序相当高，当发生层叠是很好，重要的文字啊图片内容可以优先暴露在屏幕上。</p>
+</li>
+</ol>
+<h2 id="五、有关层叠问题的“套路”"><a href="#五、有关层叠问题的“套路”" class="headerlink" title="五、有关层叠问题的“套路”"></a>五、有关层叠问题的“套路”</h2><p>当元素发生层叠的时候，我们可以根据下面2条准则进行判断：</p>
+<ol>
+<li><p>如果在同一个层叠上下文领域，当具有明显的层叠水平标示的时候，如识别的z-index值，层叠水平值大的那一个覆盖小的那一个。</p>
+</li>
+<li><p>当元素的层叠水平一致、层叠顺序相同的时候，在DOM流中处于后面的元素会覆盖前面的元素。</p>
+</li>
+</ol>
+<p>代码示例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box3"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"d"</span>&gt;</span>d<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box4"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"e"</span>&gt;</span>e<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>css:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box3</span>,</span><br><span class="line"><span class="selector-class">.box4</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="attribute">z-index</span>: auto;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">top</span>: -<span class="number">180px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.d</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">200px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#168bf5</span>;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">z-index</span>: <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.e</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">150px</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#32c292</span>;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">top</span>: -<span class="number">50px</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">z-index</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>box3和box4</code>虽然设置了<code>position: relative</code>，但是<code>z-index: auto</code>的情况下，这两个<code>div</code>还是普通元素，并没有产生层叠上下文。所以，<code>d和e</code>属于<code>&lt;html&gt;&lt;/html&gt;</code>元素的“根层叠上下文”中，此时，<strong>谁的z-index值大，谁在上面</strong>。</p>
+<p><img src="/2019/07/21/层叠上下文和层叠顺序/./层叠上下文和层叠顺序/d和e.png" alt=""></p>
+<h2 id="六、css3下的新时代的层叠上下文"><a href="#六、css3下的新时代的层叠上下文" class="headerlink" title="六、css3下的新时代的层叠上下文"></a>六、css3下的新时代的层叠上下文</h2><p>CSS3的出现除了带来了新属性，同时还对层叠上下文产生新的影响。</p>
+<p>如下：</p>
+<ol>
+<li><code>z-index</code>值不为<code>auto</code>的<code>flex</code>项(父元素<code>display:flex|inline-flex</code>)，子元素<code>z-index</code>属性值不为<code>auto</code>的时候，子元素为层叠上下文元素；</li>
+<li>元素的<code>opacity</code>值不是<code>1</code>.</li>
+<li>元素的<code>transform</code>值不是<code>none</code>.</li>
+<li>元素<code>mix-blend-mode</code>值不是<code>normal</code>.</li>
+<li>元素的<code>filter</code>值不是<code>none</code>.</li>
+<li>元素的<code>isolation</code>值是<code>isolate</code>.</li>
+<li><code>will-change</code>指定的属性值为上面任意一个。</li>
+<li>元素的<code>-webkit-overflow-scrolling</code>设为<code>touch</code>.</li>
+</ol>
+<p>以第一条为例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box5"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"f"</span>&gt;</span>f</span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"g"</span>&gt;</span>g<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.f</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">200px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">background</span>: <span class="number">#cac719</span>;</span><br><span class="line">  <span class="comment">/* 虽然设置了z-index，但是没有设置box5的position，z-index无效，.f还是普通元素，没有产生层叠上下文 */</span></span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.g</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">200px</span>;</span><br><span class="line">  <span class="attribute">background</span>: <span class="number">#e767e1</span>;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="attribute">z-index</span>: -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/07/21/层叠上下文和层叠顺序/css3的新影响.jpg" alt="./层叠上下文和层叠顺序/"></p>
+<p>f在g上方显示了。我们查找层叠顺序图可以找到，负值z-index的层叠顺序在block水平元素的下面，而黄色背景<code>div</code>元素是个普通的block元素，于是z-index小于0的g会被f覆盖。</p>
+<p>上面的例子，如果修改<code>.box5</code>的属性，其余DOM不变：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box5</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当给<code>.box5</code>设置<code>display: flex</code>时，<code>.f</code>就变成层叠上下文元素，根据层叠顺序规则，层叠上下文元素的<code>background/border</code>的层叠等级小于<code>z-index</code>值小于<code>0</code>的元素的层叠等级，所以<code>z-index</code>值为<code>-1</code>的<code>.g</code>在<code>.f</code>上面。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文整理了关于层叠方面的一些基本知识点，一些细节的应用还需要平时的积累。</p>
+<p>参考资料：</p>
+<p><a href="https://www.zhangxinxu.com/wordpress/2016/01/understand-css-stacking-context-order-z-index/" target="_blank" rel="noopener">张鑫旭-《深入理解CSS中的层叠上下文和层叠顺序》</a></p>
+<p><a href="https://blog.csdn.net/weixin_40672882/article/details/81183321" target="_blank" rel="noopener">AMInInsist-《CSS 中的z-index属性》</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#CSS" >
+    <span class="tag-code">CSS</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/09/12/Ubuntu16-04安装及常见问题解决/">
+        <span class="nav-arrow">← </span>
+        
+          Ubuntu16.04安装及常见问题解决
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#一、层叠上下文"><span class="toc-nav-text">一、层叠上下文</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#二、层叠水平"><span class="toc-nav-text">二、层叠水平</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#三、创建层叠上下文"><span class="toc-nav-text">三、创建层叠上下文</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#四、层叠顺序"><span class="toc-nav-text">四、层叠顺序</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#五、有关层叠问题的“套路”"><span class="toc-nav-text">五、有关层叠问题的“套路”</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#六、css3下的新时代的层叠上下文"><span class="toc-nav-text">六、css3下的新时代的层叠上下文</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-text">总结</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2019/07/21/层叠上下文和层叠顺序/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "层叠上下文和层叠顺序",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+  <span id="busuanzi_container_site_pv" style='display: none'>
+    viewed&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;times
+  </span>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
