@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="HongXin&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      重学JS--DOM篇 | HongXin&#39;s blog
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>HongXin's blog</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Github</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Github</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>重学JS--DOM篇</h2>
+  <p class="post-date">2020-05-22</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>最近在看《JavaScript DOM编程艺术》，打算复习一下js，以下是我在学习该书过程中的一些的知识记录，有些是之前不太了解的，有些是个人认为比较重要的：</p>
+<h2 id="事件处理函数"><a href="#事件处理函数" class="headerlink" title="事件处理函数"></a>事件处理函数</h2><ul>
+<li>onmouseover 鼠标指针移动到元素时触发</li>
+<li>onmouseout 鼠标指针离开元素时触发</li>
+<li>onmousedown 鼠标按钮点击时触发</li>
+<li>onmouseup 鼠标按钮被松开时触发</li>
+<li>onclick 用户点击完成时触发</li>
+<li>onload 加载入页面时触发</li>
+</ul>
+<h2 id="特殊的DOM属性"><a href="#特殊的DOM属性" class="headerlink" title="特殊的DOM属性"></a>特殊的DOM属性</h2><h3 id="childNodes属性"><a href="#childNodes属性" class="headerlink" title="childNodes属性"></a>childNodes属性</h3><p>childNodes可以用来获取子元素，返回的是一个数组，其包含所有类型的节点，不仅仅是元素节点。</p>
+<h3 id="nodeType属性"><a href="#nodeType属性" class="headerlink" title="nodeType属性"></a>nodeType属性</h3><p>nodeType 属性返回数字值，表明指定节点的节点类型。</p>
+<ul>
+<li>元素节点的nodeType属性值是1</li>
+<li>属性节点的nodeType属性值是2</li>
+<li>文本节点的nodeType属性值是3</li>
+</ul>
+<h3 id="nodeValue属性"><a href="#nodeValue属性" class="headerlink" title="nodeValue属性"></a>nodeValue属性</h3><p>该属性可以用来得到和设置一个节点的值</p>
+<p>注意：使用该属性获取某个元素的属性时，往往是空值。元素里包含的文本是另一种节点。往往搭配childNodes使用：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node.childNodes[<span class="number">0</span>].nodeValue</span><br></pre></td></tr></table></figure>
+<h3 id="nodeName"><a href="#nodeName" class="headerlink" title="nodeName"></a>nodeName</h3><p>nodeName 属性指定节点的节点名称。</p>
+<p>如果节点是元素节点，则 nodeName 属性返回标签名，多为大写字母的值。</p>
+<p>入股节点是属性节点，则 nodeName 属性返回属性的名称。</p>
+<h3 id="firstChild-和-lastChild属性"><a href="#firstChild-和-lastChild属性" class="headerlink" title="firstChild 和 lastChild属性"></a>firstChild 和 lastChild属性</h3><p>访问childNodes数组的第一个元素和最后的元素</p>
+<h2 id="创建新的浏览器窗口"><a href="#创建新的浏览器窗口" class="headerlink" title="创建新的浏览器窗口"></a>创建新的浏览器窗口</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.open(url, name, feature)</span><br></pre></td></tr></table></figure>
+<h2 id="性能考虑"><a href="#性能考虑" class="headerlink" title="性能考虑"></a>性能考虑</h2><ul>
+<li><p>尽量少访问DOM和尽量少标记</p>
+<p>在多个函数都会取得一组类似元素的情况下，可以考虑把搜索结果保存在一个全局变量中，或者把一组元素直接以参数形式传递给函数。</p>
+</li>
+<li><p>合并和放置脚本</p>
+<p>把所有的<code>&lt;script&gt;</code>都放在文档末尾，<code>&lt;/body&gt;</code>之前。</p>
+</li>
+<li><p>压缩脚本</p>
+<p>多数情况下，我们应该有2个版本，一个是工作副本，可以修改代码和添加注释，一个是精简副本用于放在站点上。最好在精简副本的文件名中加min字样。</p>
+</li>
+</ul>
+<h2 id="共享onload事件"><a href="#共享onload事件" class="headerlink" title="共享onload事件"></a>共享onload事件</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addLoadEvent</span>(<span class="params">func</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> oldonload = <span class="built_in">window</span>.onload;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">window</span>.onload != <span class="string">'function'</span>) &#123;</span><br><span class="line">        <span class="built_in">window</span>.onload = func;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            oldonload();</span><br><span class="line">            func();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果：无论打算在页面加载完毕时，执行多少个函数，只要多写一条语句就可以安排好一切。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">addLoadEvent(firstFunction);</span><br><span class="line">addLoadEvent(secondFunction);</span><br></pre></td></tr></table></figure>
+<h2 id="动态创建标记"><a href="#动态创建标记" class="headerlink" title="动态创建标记"></a>动态创建标记</h2><h3 id="传统方法"><a href="#传统方法" class="headerlink" title="传统方法"></a>传统方法</h3><p><code>document.write</code>，<code>innerHTML</code></p>
+<h3 id="DOM方法"><a href="#DOM方法" class="headerlink" title="DOM方法"></a>DOM方法</h3><p><code>createElement</code>、<code>appendChild</code>、<code>createTextNode</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> para = <span class="built_in">document</span>.createElement(<span class="string">"p"</span>);</span><br><span class="line"><span class="keyword">var</span> testdiv = <span class="built_in">document</span>.getElementById(<span class="string">"testdiv"</span>);</span><br><span class="line">testdiv.appendChild(para);</span><br><span class="line"><span class="keyword">var</span> txt = <span class="built_in">document</span>.createTextNode(<span class="string">"Hello world"</span>);</span><br><span class="line">para.appendChild(txt);</span><br></pre></td></tr></table></figure>
+<p><code>createElement</code>创建的是元素节点（对应<code>&lt;p&gt;</code>），<code>createTextNode</code>创建的是文本节点（对应<code>Hello world</code>）。</p>
+<h3 id="在已有元素前、后插入新元素"><a href="#在已有元素前、后插入新元素" class="headerlink" title="在已有元素前、后插入新元素"></a>在已有元素前、后插入新元素</h3><p>insertBefore(), 语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">parentElement.insertBefore(newElement, targetElement);</span><br></pre></td></tr></table></figure>
+<p>DOM并未提供insertAfter()方法，自编函数如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">insertAfter</span>(<span class="params">newElement, targetElemnt</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> parent = targetElement.parentNode;</span><br><span class="line">    <span class="keyword">if</span>(parent.lastChild == targetElement) &#123;</span><br><span class="line">        parent.appendChild(newElement);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        parent.insertBefore(newElement, targetElement.nextSibling)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要对文档进行检索时，以下DOM方法最有用：</p>
+<ul>
+<li>getElementById</li>
+<li>getElementByTagName</li>
+<li>getAttribute</li>
+</ul>
+<p>在需要把信息添加到文档里去时，以下DOM方法最有用：</p>
+<ul>
+<li>createElement</li>
+<li>createTextNode</li>
+<li>appendChild</li>
+<li>insertBefore</li>
+<li>setAttribute</li>
+</ul>
+<h3 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h3><p>编写DOM脚本时，我们会想当然地认为某个节点一定是一个元素节点，这是一种相当常见的错误。如果没有百分之百的把握，就一定要去检查nodeType属性值。有很多DOM法只能用于元素节点上，如果用于文本节点上，就会出错。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">blockquote</span> <span class="attr">cite</span>=<span class="string">"http://www.w3.org/DOM"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">        A platform- and language-neutral...</span><br><span class="line">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">blockquote</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>乍看起来，blockquote元素的最后一个子节点应该是那个p元素，而这意味着lastChild属性的返回值将是一个p元素节点。可是，事实却不一定如此。</p>
+<p>p节点确实是blockquote元素的最后一个<strong>元素</strong>节点。但在p和blockquote标签之间还存在着一个换行符。有的浏览器会把这个换行符解释为一个<strong>文本</strong>节点。这样一来，blockquote元素节点的lastChild属性就将是一个文本节点而不是那个p元素节点。</p>
+<h2 id="异步请求"><a href="#异步请求" class="headerlink" title="异步请求"></a>异步请求</h2><p>异步请求的异步性极其容易被忽略。脚本在发送XMLHTTPRequest请求之后，仍然会继续执行，不会等待响应返回。Ajax应用的特色就是减少重复加载页面的次数，但缺少状态记录的技术会与浏览器的一些使用习惯产生冲突，导致用户无法使用后退按钮或者无法为特定状态下的页面添加书签。</p>
+<p>要构建成功的Ajax应用，关键在于把Ajax功能看作JS的增强功能，在平稳退化的基础上增强渐进。</p>
+<h2 id="CSS-DOM"><a href="#CSS-DOM" class="headerlink" title="CSS-DOM"></a>CSS-DOM</h2><h3 id="何时使用DOM脚本设置样式"><a href="#何时使用DOM脚本设置样式" class="headerlink" title="何时使用DOM脚本设置样式"></a>何时使用DOM脚本设置样式</h3><p>1.为节点树种特定位置上的元素设置固定样式</p>
+<p>如果我们想要每个h1元素后面的那个元素保持特定样式不变，而文档的内容却是不断刷新的，添加class属性的工作就变成了一种负担。这时我们通过DOM来找出文档中所有的h1元素，然后找出紧跟在其后面的元素，并把样式添加给它，就会变得事半功倍。</p>
+<p>2.根据某种条件反复设置某种样式</p>
+<p>典型使用场景，表格内奇数行与偶数行使用不同颜色。通过函数遍历列表的<code>&lt;li&gt;</code>，根据其奇偶数进行更改颜色。</p>
+<h3 id="className属性"><a href="#className属性" class="headerlink" title="className属性"></a>className属性</h3><p>提前设置好某个class的样式，接着直接对元素添加一个class，从而实现添加样式。以下为添加class的函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addClass</span>(<span class="params">element, value</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!element.className) &#123;</span><br><span class="line">        element.className = value;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        newClassName = element.className;</span><br><span class="line">        newClass+= <span class="string">" "</span>;</span><br><span class="line">        newClass+= value;</span><br><span class="line">        element.className = newClassName;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="使用JS实现动画效果"><a href="#使用JS实现动画效果" class="headerlink" title="使用JS实现动画效果"></a>使用JS实现动画效果</h2><h3 id="时间"><a href="#时间" class="headerlink" title="时间"></a>时间</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="string">"function"</span>, interval)</span><br><span class="line"><span class="comment">//最好为该函数添加一个变量</span></span><br><span class="line">variable = setTimeout(<span class="string">"function"</span>,interval)</span><br></pre></td></tr></table></figure>
+<h3 id="可以较为灵活地移动元素的函数"><a href="#可以较为灵活地移动元素的函数" class="headerlink" title="可以较为灵活地移动元素的函数"></a>可以较为灵活地移动元素的函数</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">moveElement</span>(<span class="params">elementID, final_x, final_y, interval</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!<span class="built_in">document</span>.getElementById) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span>(!<span class="built_in">document</span>.getElementById(elementID)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">var</span> elem = <span class="built_in">document</span>.getElementById(elementID);</span><br><span class="line">    <span class="keyword">if</span> (elem.movement) &#123;</span><br><span class="line">        clearTimeout(elem.movement);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!elem.style.left) &#123;</span><br><span class="line">        elem.style.left = <span class="string">"0px"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!elem.style.top) &#123;</span><br><span class="line">        elem.style.top = <span class="string">"0px"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> xpos = <span class="built_in">parseInt</span>(elem.style.left);</span><br><span class="line">    <span class="keyword">var</span> ypos = <span class="built_in">parseInt</span>(elem.style.top);</span><br><span class="line">    <span class="keyword">var</span> dist = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (xpos == final_x &amp;&amp; ypos == final_y) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (xpos &lt; final_x) &#123;</span><br><span class="line">        dist = <span class="built_in">Math</span>.ceil((final_x - xpos)/<span class="number">10</span>);</span><br><span class="line">        xpos = xpos + dist;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (xpos &gt; final_x) &#123;</span><br><span class="line">        dist = <span class="built_in">Math</span>.ceil((xpos - final_x)/<span class="number">10</span>);</span><br><span class="line">        xpos = xpos - dist;</span><br><span class="line">    &#125;<span class="keyword">if</span> (ypos &lt; final_y) &#123;</span><br><span class="line">        dist = <span class="built_in">Math</span>.ceil((final_y - ypos)/<span class="number">10</span>);</span><br><span class="line">        ypos = ypos + dist;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (ypos &gt; final_y) &#123;</span><br><span class="line">        dist = <span class="built_in">Math</span>.ceil((ypos - final_y)/<span class="number">10</span>);</span><br><span class="line">        ypoos = ypos - dist</span><br><span class="line">    &#125;</span><br><span class="line">    elem.style.left = xpos + <span class="string">"px"</span>;</span><br><span class="line">    elem.style.top = ypos + <span class="string">"px"</span>;</span><br><span class="line">    <span class="keyword">var</span> repeat = <span class="string">"moveElement('"</span> + elementID + <span class="string">"',"</span> + final_x + <span class="string">","</span> + final_y + <span class="string">","</span> + interval + <span class="string">")"</span>;</span><br><span class="line">    <span class="comment">//起初我并不理解上面这行代码，理解的关键在于分清 "moveElement('"  和  "',"  是两个字符串，而elementID是变量</span></span><br><span class="line">    elem.movement = setTimeout(repeat, interval);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Math-ceil-Math-floor-amp-Math-round"><a href="#Math-ceil-Math-floor-amp-Math-round" class="headerlink" title="Math.ceil, Math.floor &amp; Math.round"></a>Math.ceil, Math.floor &amp; Math.round</h3><ul>
+<li>Math.round：四舍五入，取最接近的整数</li>
+<li>Math.ceil：向较大值舍入，取最接近的整数</li>
+<li>Math.floor：向较小值舍入，取最接近的整数</li>
+</ul>
+<h3 id="相关的CSS"><a href="#相关的CSS" class="headerlink" title="相关的CSS"></a>相关的CSS</h3><p>overflow属性用来处理一个元素的尺寸超出其容器尺寸的情况。其属性的可取纸分为4种：visible、hidden、scroll和auto。</p>
+<p>思路：将某个元素的overflow属性值改为hidden，接着使用js将元素hidden的部分展示出来。</p>
+<h2 id="HTML5"><a href="#HTML5" class="headerlink" title="HTML5"></a>HTML5</h2><h3 id="Modernizr"><a href="#Modernizr" class="headerlink" title="Modernizr"></a>Modernizr</h3><p>一个开源的JavaScript库，利用它可以检测用户浏览器的HTML5和CSS3特性。<a href="http://modernizr.cn/" target="_blank" rel="noopener">Modernizr中文网</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#JavaScript" >
+    <span class="tag-code">JavaScript</span>
+  </a>
+
+  <a href="/tags#DOM" >
+    <span class="tag-code">DOM</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/07/21/层叠上下文和层叠顺序/">
+        <span class="nav-arrow">← </span>
+        
+          层叠上下文和层叠顺序
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#事件处理函数"><span class="toc-nav-text">事件处理函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#特殊的DOM属性"><span class="toc-nav-text">特殊的DOM属性</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#childNodes属性"><span class="toc-nav-text">childNodes属性</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#nodeType属性"><span class="toc-nav-text">nodeType属性</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#nodeValue属性"><span class="toc-nav-text">nodeValue属性</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#nodeName"><span class="toc-nav-text">nodeName</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#firstChild-和-lastChild属性"><span class="toc-nav-text">firstChild 和 lastChild属性</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#创建新的浏览器窗口"><span class="toc-nav-text">创建新的浏览器窗口</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#性能考虑"><span class="toc-nav-text">性能考虑</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#共享onload事件"><span class="toc-nav-text">共享onload事件</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#动态创建标记"><span class="toc-nav-text">动态创建标记</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#传统方法"><span class="toc-nav-text">传统方法</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#DOM方法"><span class="toc-nav-text">DOM方法</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#在已有元素前、后插入新元素"><span class="toc-nav-text">在已有元素前、后插入新元素</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#常见错误"><span class="toc-nav-text">常见错误</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#异步请求"><span class="toc-nav-text">异步请求</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#CSS-DOM"><span class="toc-nav-text">CSS-DOM</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#何时使用DOM脚本设置样式"><span class="toc-nav-text">何时使用DOM脚本设置样式</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#className属性"><span class="toc-nav-text">className属性</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#使用JS实现动画效果"><span class="toc-nav-text">使用JS实现动画效果</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#时间"><span class="toc-nav-text">时间</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#可以较为灵活地移动元素的函数"><span class="toc-nav-text">可以较为灵活地移动元素的函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Math-ceil-Math-floor-amp-Math-round"><span class="toc-nav-text">Math.ceil, Math.floor &amp; Math.round</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#相关的CSS"><span class="toc-nav-text">相关的CSS</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HTML5"><span class="toc-nav-text">HTML5</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Modernizr"><span class="toc-nav-text">Modernizr</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2020/05/22/重学JS-DOM篇/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "重学JS--DOM篇",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+  <span id="busuanzi_container_site_pv" style='display: none'>
+    viewed&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;times
+  </span>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
