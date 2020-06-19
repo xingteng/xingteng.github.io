@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="HongXin&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      二分查找-以LeetCode#面试53-II为例 | HongXin&#39;s blog
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>HongXin's blog</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Github</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Github</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>二分查找-以LeetCode#面试53-II为例</h2>
+  <p class="post-date">2020-06-19</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>在LeetCode上做题的时候发现很多这种类型的题目，在此整理一下解题思路并且对二分查找进行一个深入的了解。<br>二分查找也称折半查找（Binary Search），它是一种效率较高的查找方法。<br>采用二分查找的前提：</p>
+<ol>
+<li>要求线性表必须采用顺序存储结构</li>
+<li>表中元素按关键字有序排列。</li>
+</ol>
+<h2 id="一、二分查找基本框架"><a href="#一、二分查找基本框架" class="headerlink" title="一、二分查找基本框架"></a>一、二分查找基本框架</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">binarySearch</span>(<span class="params">nums, target</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> left = <span class="number">0</span>, right = ...;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(...) &#123;</span><br><span class="line">        <span class="keyword">let</span> mid = <span class="built_in">Math</span>.floor((left + right) / <span class="number">2</span>);</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = ...</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中…标记的部分，就是可能出现细节问题的地方，当你见到一个二分查找的代码时，首先注意这几个地方。后文用实例分析这些地方能有什么样的变化。</p>
+<p>另外声明一下，计算 mid 时需要技巧防止溢出，建议写成: <code>mid = left + (right - left) / 2</code>，本文暂时忽略这个问题。</p>
+<h2 id="二、寻找一个数（基本的二分搜索）"><a href="#二、寻找一个数（基本的二分搜索）" class="headerlink" title="二、寻找一个数（基本的二分搜索）"></a>二、寻找一个数（基本的二分搜索）</h2><p>这个场景是最简单的，可能也是大家最熟悉的，即搜索一个数，如果存在，返回其索引，否则返回 -1。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">binarySearch</span>(<span class="params">nums, target</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> left = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> right = nums.length - <span class="number">1</span>; <span class="comment">// 注意</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(left &lt;= right) &#123; <span class="comment">// 注意</span></span><br><span class="line">        <span class="keyword">let</span> mid = <span class="built_in">Math</span>.floor((left + right) / <span class="number">2</span>);</span><br><span class="line">        <span class="keyword">if</span>(nums[mid] == target)</span><br><span class="line">            <span class="keyword">return</span> mid;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target)</span><br><span class="line">            left = mid + <span class="number">1</span>; <span class="comment">// 注意</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target)</span><br><span class="line">            right = mid - <span class="number">1</span>; <span class="comment">// 注意</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-为什么-while-循环的条件中是-lt-，而不是-lt"><a href="#1-为什么-while-循环的条件中是-lt-，而不是-lt" class="headerlink" title="1. 为什么 while 循环的条件中是 &lt;=，而不是&lt;?"></a>1. 为什么 while 循环的条件中是 <code>&lt;=</code>，而不是<code>&lt;</code>?</h3><p>答：因为初始化 right 的赋值是 <code>nums.length - 1</code>，即最后一个元素的索引，而不是 <code>nums.length</code>。</p>
+<p>这二者可能出现在不同功能的二分查找中，区别是：前者相当于两端都闭区间 [left, right]，后者相当于左闭右开区间 [left, right)，因为索引大小为 nums.length 是越界的。</p>
+<p>我们这个算法中使用的是 [left, right] 两端都闭的区间。这个区间就是每次进行搜索的区间，我们不妨称为「搜索区间」(search space)。</p>
+<h4 id="什么时候应该停止搜索呢？"><a href="#什么时候应该停止搜索呢？" class="headerlink" title="什么时候应该停止搜索呢？"></a>什么时候应该停止搜索呢？</h4><p>当然，找到了目标值的时候可以终止：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(nums[mid] == target) &#123;</span><br><span class="line">    <span class="keyword">return</span> mid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但如果没找到，就需要 while 循环终止，然后返回 -1。那 while 循环什么时候应该终止？搜索区间为空的时候应该终止，意味着你没得找了，就等于没找到嘛。</p>
+<ul>
+<li><p>while(left &lt;= right)的终止条件是 left == right + 1，写成区间的形式就是 [right + 1, right]，或者带个具体的数字进去 [3, 2]，可见这时候搜索区间为空，因为没有数字既大于等于 3 又小于等于 2 的吧。所以这时候 while 循环终止是正确的，直接返回 -1 即可。</p>
+</li>
+<li><p>while(left &lt; right)的终止条件是 left == right，写成区间的形式就是 [right, right]，或者带个具体的数字进去 [2, 2]，这时候搜索区间非空，还有一个数 2，但此时 while 循环终止了。也就是说这区间 [2, 2] 被漏掉了，索引 2 没有被搜索，如果这时候直接返回 -1 就可能出现错误。</p>
+</li>
+</ul>
+<p>当然，如果你非要用 while(left &lt; right) 也可以，我们已经知道了出错的原因，就打个补丁好了：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(left &lt; right) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> nums[left] == target ? left : <span class="number">-1</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="2-为什么-left-mid-1，right-mid-1？"><a href="#2-为什么-left-mid-1，right-mid-1？" class="headerlink" title="2.为什么 left = mid + 1，right = mid - 1？"></a>2.为什么 left = mid + 1，right = mid - 1？</h3><p>答：刚才明确了「搜索区间」这个概念，而且本算法的搜索区间是两端都闭的，即 [left, right]。那么当我们发现索引 mid 不是要找的 target时，我们可以以mid为界限，去搜索左边的[left, mid - 1] 或者 mid右边的[mid + 1, right] 。因为 mid 已经搜索过，应该从搜索区间中去除。</p>
+<h3 id="3-此算法有什么缺陷？"><a href="#3-此算法有什么缺陷？" class="headerlink" title="3. 此算法有什么缺陷？"></a>3. 此算法有什么缺陷？</h3><p>答：这个算法存在局限性。比如说给你有序数组 nums = [1,2,2,2,3]，target = 2，此算法返回的索引是 2，没错。但是如果我想得到 target 的左侧边界，即索引 1，或者我想得到 target 的右侧边界，即索引 3，这样的话此算法是无法处理的。</p>
+<p>这样的需求很常见。你也许会说，找到一个 target 索引，然后向左或向右线性搜索不行吗？可以，但是不好，因为这样难以保证二分查找对数级的时间复杂度了。</p>
+<p>我们后续的算法就来讨论这两种二分查找的算法。</p>
+<h2 id="三、寻找左侧边界的二分搜索"><a href="#三、寻找左侧边界的二分搜索" class="headerlink" title="三、寻找左侧边界的二分搜索"></a><strong>三、寻找左侧边界的二分搜索</strong></h2><p>直接看代码，其中的标记是需要注意的细节：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">left_bound</span>(<span class="params">nums, target</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">let</span> left = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> right = nums.length; <span class="comment">// 注意</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (left &lt; right) &#123; <span class="comment">// 注意</span></span><br><span class="line">        mid = <span class="built_in">Math</span>.floor((left + right) / <span class="number">2</span>);</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            right = mid;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = mid; <span class="comment">// 注意</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>1.</em> 为什么 while(left &lt; right) 而不是 &lt;= ?</p>
+<p>答：用相同的方法分析，因为初始化 right = nums.length 而不是 nums.length - 1 。因此每次循环的「搜索区间」是 [left, right) 左闭右开。</p>
+<p>while(left &lt; right) 终止的条件是 left == right，此时搜索区间 [left, left) 恰巧为空，所以可以正确终止。</p>
+<p><em>2.</em> 为什么没有返回 -1 的操作？如果 nums 中不存在 target 这个值，怎么办？</p>
+<p>答：因为要一步一步来，先理解一下这个「左侧边界」有什么特殊含义：</p>
+<p><img src="/2020/06/19/二分查找-以LeetCode-面试53-II为例/数组.png" alt="img"></p>
+<p>对于这个数组，算法会返回 1。这个 1 的含义可以这样解读：nums 中小于 2 的元素有 1 个。</p>
+<p>比如对于有序数组 nums = [2,3,5,7], target = 1，算法会返回 0，含义是：nums 中小于 1 的元素有 0 个。如果 target = 8，算法会返回 4，含义是：nums 中小于 8 的元素有 4 个。</p>
+<p>综上可以看出，函数的返回值（即 left 变量的值）取值区间是闭区间 [0, nums.length]，所以我们简单添加两行代码就能在正确的时候 return -1：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// target 比所有数都大</span></span><br><span class="line"><span class="keyword">if</span> (left == nums.length) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"><span class="comment">// 类似之前算法的处理方式</span></span><br><span class="line"><span class="keyword">return</span> nums[left] == target ? left : <span class="number">-1</span>;</span><br></pre></td></tr></table></figure>
+<p><em>3.</em> 为什么 left = mid + 1，right = mid ？和之前的算法不一样？</p>
+<p>答：这个很好解释，因为我们的「搜索区间」是 [left, right) 左闭右开，所以当 nums[mid] 被检测之后，下一步的搜索区间应该去掉 mid 分割成两个区间，即 [left, mid) 或 [mid + 1, right)。</p>
+<p><em>4.</em> 为什么该算法能够搜索左侧边界？</p>
+<p>答：关键在于对于 nums[mid] == target 这种情况的处理：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">    right = mid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可见，找到 target 时不要立即返回，而是缩小「搜索区间」的上界 right，在区间 [left, mid) 中继续搜索，即不断向左收缩，达到锁定左侧边界的目的。</p>
+<p><em>5.</em> 为什么返回 left 而不是 right？</p>
+<p>答：返回left和right都是一样的，因为 while 终止的条件是 left == right。</p>
+<h2 id="四、寻找右侧边界的二分查找"><a href="#四、寻找右侧边界的二分查找" class="headerlink" title="四、寻找右侧边界的二分查找"></a>四、寻找右侧边界的二分查找</h2><p>寻找右侧边界和寻找左侧边界的代码差不多，只有两处不同，已标注：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">right_bound</span>(<span class="params">nums, target</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    int left = <span class="number">0</span>, right = nums.length;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">        mid = <span class="built_in">Math</span>.floor((left + right) / <span class="number">2</span>);</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>; <span class="comment">// 注意</span></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = mid;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> left - <span class="number">1</span>; <span class="comment">// 注意</span></span><br></pre></td></tr></table></figure>
+<p><em>1.</em> 为什么这个算法能够找到右侧边界？</p>
+<p>答：类似地，关键点还是这里：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">    left = mid + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当 <code>nums[mid] == target</code> 时，不要立即返回，而是增大「搜索区间」的下界 left，使得区间不断向右收缩，达到锁定右侧边界的目的。</p>
+<h2 id="五、最后总结"><a href="#五、最后总结" class="headerlink" title="五、最后总结"></a>五、最后总结</h2><p>先来梳理一下这些细节差异的因果逻辑：</p>
+<p>第一个，最基本的二分查找算法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">因为我们初始化 right = nums.length - 1</span><br><span class="line">所以决定了我们的「搜索区间」是 [left, right]</span><br><span class="line">所以决定了 while (left &lt;= right)</span><br><span class="line">同时也决定了 left = mid+1 和 right = mid-1</span><br><span class="line"></span><br><span class="line">因为我们只需找到一个 target 的索引即可</span><br><span class="line">所以当 nums[mid] == target 时可以立即返回</span><br></pre></td></tr></table></figure>
+<p>第二个，寻找左侧边界的二分查找：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">因为我们初始化 right = nums.length</span><br><span class="line">所以决定了我们的「搜索区间」是 [left, right)</span><br><span class="line">所以决定了 while (left &lt; right)</span><br><span class="line">同时也决定了 left = mid+1 和 right = mid</span><br><span class="line"></span><br><span class="line">因为我们需找到 target 的最左侧索引</span><br><span class="line">所以当 nums[mid] == target 时不要立即返回</span><br><span class="line">而要收紧右侧边界以锁定左侧边界</span><br></pre></td></tr></table></figure>
+<p>第三个，寻找右侧边界的二分查找：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">前提条件与第二个相同</span><br><span class="line">因为我们需找到 target 的最右侧索引</span><br><span class="line">所以当 nums[mid] == target 时不要立即返回</span><br><span class="line">而要收紧左侧边界以锁定右侧边界</span><br><span class="line"></span><br><span class="line">又因为收紧左侧边界时必须 left = mid + 1</span><br><span class="line">所以最后无论返回 left 还是 right，必须减一</span><br></pre></td></tr></table></figure>
+<h2 id="以LeetCode-面试53-II为例"><a href="#以LeetCode-面试53-II为例" class="headerlink" title="以LeetCode#面试53-II为例"></a>以LeetCode#面试53-II为例</h2><p>一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">示例 1:</span><br><span class="line">输入: [0,1,3]</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">示例2:</span><br><span class="line">输入: [0,1,2,3,4,5,6,7,9]</span><br><span class="line">输出: 8</span><br></pre></td></tr></table></figure>
+<p>限制： 1 &lt;= 数组长度 &lt;= 10000</p>
+<p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/que-shi-de-shu-zi-lcof" target="_blank" rel="noopener">https://leetcode-cn.com/problems/que-shi-de-shu-zi-lcof</a></p>
+<p>left 指向 0，right 指向最后一个元素<br>计算中间坐标 mid：</p>
+<ul>
+<li>如果mid = nums[mid]，说明[0, mid]范围内不缺失数字，left 更新为 mid + 1</li>
+<li>如果mid &lt; nums[mid]，说明[mid, right]范围内不缺失数字，right 更新为 mid - 1</li>
+<li>检查 left 是否小于等于 mid，若成立，返回第 2 步；否则，向下执行<br>  返回 left 即可<br>  注意，根据题意，可以知道mid &gt; nums[mid]这种情况不存在。</li>
+</ul>
+<p>代码实现如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> missingNumber = <span class="function"><span class="keyword">function</span>(<span class="params">nums</span>) </span>&#123;</span><br><span class="line"><span class="keyword">let</span> left = <span class="number">0</span>,</span><br><span class="line">    right = nums.length - <span class="number">1</span>;</span><br><span class="line"><span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">    <span class="keyword">let</span> mid = <span class="built_in">Math</span>.floor((left + right) / <span class="number">2</span>);</span><br><span class="line">    <span class="keyword">if</span> (mid === nums[mid]) &#123;</span><br><span class="line">        left = mid + <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mid &lt; nums[mid]) &#123;</span><br><span class="line">        right = mid - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">  <span class="keyword">return</span> left;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Reference:</p>
+<p><a href="https://leetcode-cn.com/problems/que-shi-de-shu-zi-lcof/solution/er-fen-fa-javascriptshi-xian-by-xin-tan/" target="_blank" rel="noopener">1习题思路解法参考自此</a><br><a href="https://www.cnblogs.com/kyoner/p/11080078.html" target="_blank" rel="noopener">2参考博客murphy_gb</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#LeetCode" >
+    <span class="tag-code">LeetCode</span>
+  </a>
+
+  <a href="/tags#二分查找" >
+    <span class="tag-code">二分查找</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/05/22/重学JS-DOM篇/">
+        <span class="nav-arrow">← </span>
+        
+          重学JS--DOM篇
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#一、二分查找基本框架"><span class="toc-nav-text">一、二分查找基本框架</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#二、寻找一个数（基本的二分搜索）"><span class="toc-nav-text">二、寻找一个数（基本的二分搜索）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-为什么-while-循环的条件中是-lt-，而不是-lt"><span class="toc-nav-text">1. 为什么 while 循环的条件中是 &lt;=，而不是&lt;?</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#什么时候应该停止搜索呢？"><span class="toc-nav-text">什么时候应该停止搜索呢？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-为什么-left-mid-1，right-mid-1？"><span class="toc-nav-text">2.为什么 left = mid + 1，right = mid - 1？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-此算法有什么缺陷？"><span class="toc-nav-text">3. 此算法有什么缺陷？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#三、寻找左侧边界的二分搜索"><span class="toc-nav-text">三、寻找左侧边界的二分搜索</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#四、寻找右侧边界的二分查找"><span class="toc-nav-text">四、寻找右侧边界的二分查找</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#五、最后总结"><span class="toc-nav-text">五、最后总结</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#以LeetCode-面试53-II为例"><span class="toc-nav-text">以LeetCode#面试53-II为例</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2020/06/19/二分查找-以LeetCode-面试53-II为例/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "二分查找-以LeetCode#面试53-II为例",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+  <span id="busuanzi_container_site_pv" style='display: none'>
+    viewed&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;times
+  </span>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
